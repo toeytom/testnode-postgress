@@ -1,0 +1,5 @@
+Backup:
+docker exec -t -u postgres testnode_db_1 pg_dumpall -c > dump.sql
+
+Restore:
+cat dump.sql | docker exec -i testnode_db_1 psql -Upostgres

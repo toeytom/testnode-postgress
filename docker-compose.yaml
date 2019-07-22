@@ -1,0 +1,36 @@
+version: "3.5"
+services: 
+  node:
+    build: ./
+    depends_on:
+      - db
+      - adminer
+    container_name: node
+    command: nodemon -L /home/node/app/app.js
+    ports:
+      - 3000:3000
+    networks:
+      - backend
+    volumes:
+      - ./app:/home/node/app
+      - ./img:/home/node/img
+    restart: always 
+  db:
+    image: postgres
+    restart: always
+    networks:
+      - backend
+    # volumes:
+    #   - ./data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432 
+
+  adminer:
+    image: adminer
+    networks:
+      - backend
+    restart: always
+    ports:
+      - 8080:8080
+networks:
+  backend:
