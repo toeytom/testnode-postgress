@@ -10,17 +10,33 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", async (req, res) => {
   await client.query('SELECT * FROM "Users"', (err, response) => {
-    err ? console.log("error") : console.log(response.rows);
-    res.json({ user: response.rows });
+    err ? console.log("error") : console.log(response);
+    res.json({ user: response });
     // client.end()
   });
 });
 app.post("/", async (req,res)=>{
-    var data= [["dd","dddd",25]];
-    var sql = 'INSERT INTO Users values("dd","dddd",25)'
-    await client.query(sql,(err,response,fields)=>{
+    var sql = 'INSERT INTO "Users"(name, surname, age) VALUES($1,$2,$3)'
+    var values = [req.body.name,req.body.surname,req.body.age]
+    await client.query(sql,values,(err,response,fields)=>{
         err?console.log(err):console.log("dasdsa")
+        res.json(response)
     })
+})
+app.put("/", async(req,res)=>{
+  var sql = 'UPDATE "Users" SET name=20'
+  await client.query(sql,(err,response)=>{
+    err?console.log(err):console.log(response)
+    res.json(response)
+  })
+})
+app.delete("/", async(req,res)=>{
+  var sql = 'DELETE FROM "Users" WHERE name=$1'
+  var values = [20] 
+  await client.query(sql,values,(err,response)=>{
+    err?console.log(err):console.log(response)
+    res.json(response)
+  }) 
 })
 
 var connectDB = async () => {

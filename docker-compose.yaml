@@ -22,6 +22,7 @@ services:
       - backend
     # volumes:
     #   - ./data:/var/lib/postgresql/data
+    # command: cat dump.sql | docker exec -i testnode_db_1 psql -Upostgres
     ports:
       - 5432:5432 
 
